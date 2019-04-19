@@ -1,17 +1,10 @@
+/**
+ * 
+ */
 package us.cartisan.mp3anager;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.stream.Stream;
-
-import org.apache.commons.io.FilenameUtils;
-import org.junit.Test;
 
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
@@ -23,72 +16,8 @@ import com.mpatric.mp3agic.UnsupportedTagException;
  * @author hyungkook.kim
  *
  */
-public class Mp3SearchVisitorTest {
-	@Test
-	public void testMp3SearchVisitor() throws IOException {
-		Path startingDir = Paths.get("D:\\hk\\music\\콩순이");
-		Mp3SearchVisitor mp3SearchVisitor = new Mp3SearchVisitor(startingDir, null);
-		Files.walkFileTree(startingDir, EnumSet.of(FileVisitOption.FOLLOW_LINKS), 1, mp3SearchVisitor);
-	}
-
-	@Test
-	public void testMp3SearchVisitor2() throws IOException, UnsupportedTagException, InvalidDataException {
-		Path startingDir = Paths.get("D:\\hk\\music");
-		Mp3SearchVisitor mp3SearchVisitor = new Mp3SearchVisitor(startingDir, "원더걸스");
-		Files.walkFileTree(startingDir, EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, mp3SearchVisitor);
-		List<Path> result = mp3SearchVisitor.getResult();
-		if (result.size() > 0) {
-			for (Path p : result) {
-				File f = p.toFile();
-				if (f.isDirectory()) {
-					System.out.println("dir:\t" + p);
-				} else {
-					System.out.println("file:\t" + p);
-
-					printId3Tag(p);
-				}
-			}
-		}
-	}
-	
-	@Test
-	public void testMp3SearchVisitor3() throws IOException {
-		String word = "원더걸스";
-		Path startingDir = Paths.get("D:\\hk\\music");
-		Stream<Path> lines = Files.walk(startingDir);
-		lines.filter(p -> {
-			boolean result = false;
-			try {
-				result = isSearchingMp3(p, word);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return result;
-		});
-	}
-	
-	private boolean isSearchingMp3(Path p, String word) throws UnsupportedTagException, InvalidDataException, IOException {
-		File f = p.toFile();
-		if (f.isDirectory()) {
-			String[] spliteds = p.toString().split("\\\\");
-			if (spliteds[spliteds.length - 1].contains(word)) {
-				System.out.println("dir:\t" + p);
-				return true;
-			}
-		} else {
-			System.out.println("file:\t" + p);
-			String fileName = "" + p.getFileName();
-			String fileExt = FilenameUtils.getExtension(fileName).toUpperCase();
-			if ("MP3".equals(fileExt)) {
-				printId3Tag(p);
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private void printId3Tag(Path p) throws UnsupportedTagException, InvalidDataException, IOException {
+public class Mp3TagReader {
+	public static void printId3Tag(Path p) throws UnsupportedTagException, InvalidDataException, IOException {
 		Mp3File mp3file = new Mp3File(p.toString());
 
 		System.out.println("\tLength of this mp3 is :" + mp3file.getLengthInSeconds() + " seconds");
