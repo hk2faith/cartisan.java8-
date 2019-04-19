@@ -15,6 +15,8 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 
 /**
  * @author hyungkook.kim
+ * 
+ * {@link : https://www.javacodegeeks.com/2014/05/playing-with-java-8-lambdas-paths-and-files.html }
  *
  */
 public class Mp3FileBrowserTest {

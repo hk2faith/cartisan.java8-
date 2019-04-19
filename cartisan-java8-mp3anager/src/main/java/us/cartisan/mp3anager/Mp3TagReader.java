@@ -14,6 +14,9 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 
 /**
  * @author hyungkook.kim
+ * 
+ * {@link : https://github.com/mpatric/mp3agic }
+ * {@link : https://github.com/mpatric/mp3agic-examples/tree/master/src/main/java/com/mpatric/mp3agic/app }
  *
  */
 public class Mp3TagReader {
