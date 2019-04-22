@@ -20,6 +20,18 @@ import org.apache.commons.io.FilenameUtils;
  *
  */
 public class Mp3FileBrowser {
+	public static List<Path> retrieveDir(final String rootPath) {
+		final Path rootP = Paths.get(rootPath);
+
+		final List<Path> matchedList = new ArrayList<>();
+		try (final Stream<Path> pathStream = Files.walk(rootP, FileVisitOption.FOLLOW_LINKS)) {
+			pathStream.filter((p) -> p.toFile().isDirectory()).forEach(p -> matchedList.add(p));
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		return matchedList;
+	}
+	
 	public static List<Path> retrieve(final String rootPath) {
 		final Path rootP = Paths.get(rootPath);
 

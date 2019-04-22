@@ -61,4 +61,25 @@ public class Mp3FileBrowserTest {
 			System.out.println("DIRECTORY['" + path + "'] is not retrieved.");
 		}
 	}
+	
+	@Test
+	public void testRetrieveDir() throws IOException, UnsupportedTagException, InvalidDataException {
+		String path = "D:\\hk\\music";
+		List<Path> pathList = Mp3FileBrowser.retrieveDir(path);
+		if (pathList.size() > 0) {
+			for (Path p : pathList) {
+				File f = p.toFile();
+				if (f.isDirectory()) {
+					System.out.println("DIRECTORY: " + p);
+				} else {
+					System.out.println("FILE: " + p);
+					Mp3TagReader.printId3Tag(p);
+				}
+			}
+			
+			System.out.println("\nDIRECTORY['" + path + "'] is retrieved. totalCount: " + pathList.size() + "\n");
+		} else {
+			System.out.println("DIRECTORY['" + path + "'] is not retrieved.");
+		}
+	}
 }
