@@ -22,7 +22,7 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 public class Mp3FileBrowserTest {
 	@Test
 	public void testSearch() throws IOException, UnsupportedTagException, InvalidDataException {
-		String query = "태연";
+		String query = "언니쓰";
 		List<Path> pathList = Mp3FileBrowser.search("D:\\hk\\music", query);
 		if (pathList.size() > 0) {
 			for (Path p : pathList) {
@@ -31,7 +31,7 @@ public class Mp3FileBrowserTest {
 					System.out.println("DIRECTORY: " + p);
 				} else {
 					System.out.println("FILE: " + p);
-					Mp3TagReader.printId3Tag(p);
+					Mp3TagReader.printId3Tag(p, true);
 				}
 			}
 			
@@ -52,7 +52,7 @@ public class Mp3FileBrowserTest {
 					System.out.println("DIRECTORY: " + p);
 				} else {
 					System.out.println("FILE: " + p);
-					Mp3TagReader.printId3Tag(p);
+					Mp3TagReader.printId3Tag(p, false);
 				}
 			}
 			
@@ -73,7 +73,7 @@ public class Mp3FileBrowserTest {
 					System.out.println("DIRECTORY: " + p);
 				} else {
 					System.out.println("FILE: " + p);
-					Mp3TagReader.printId3Tag(p);
+					Mp3TagReader.printId3Tag(p, false);
 				}
 			}
 			

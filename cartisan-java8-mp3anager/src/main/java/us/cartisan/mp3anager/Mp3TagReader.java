@@ -5,6 +5,7 @@ package us.cartisan.mp3anager;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Base64;
 
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
@@ -20,7 +21,7 @@ import com.mpatric.mp3agic.UnsupportedTagException;
  *
  */
 public class Mp3TagReader {
-	public static void printId3Tag(Path p) throws UnsupportedTagException, InvalidDataException, IOException {
+	public static void printId3Tag(Path p, boolean withImage) throws UnsupportedTagException, InvalidDataException, IOException {
 		Mp3File mp3file = new Mp3File(p.toString());
 
 		System.out.println("\tLength of this mp3 is :" + mp3file.getLengthInSeconds() + " seconds");
@@ -59,8 +60,23 @@ public class Mp3TagReader {
 			System.out.println("\t\tCopyright: " + id3v2Tag.getCopyright());
 			System.out.println("\t\tURL: " + id3v2Tag.getUrl());
 			System.out.println("\t\tEncoder: " + id3v2Tag.getEncoder());
+			
+			if (withImage) {
+				extractPics(id3v2Tag);
+			}
 		}
 
 		System.out.println("\tHas custom tag?: " + (mp3file.hasCustomTag() ? "YES" : "NO"));
+		
+	}
+	
+	private static void extractPics(ID3v2 id3v2tag) {
+		if (id3v2tag != null) {
+			String mimeType = id3v2tag.getAlbumImageMimeType();
+			byte[] data = id3v2tag.getAlbumImage();
+			String encodedString = Base64.getEncoder().encodeToString(data);
+			
+			System.out.println("\t\tencodedAlbumImageBase64: data:" + mimeType + ";base64," + encodedString);
+		}
 	}
 }
